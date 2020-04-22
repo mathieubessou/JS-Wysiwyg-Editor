@@ -1,0 +1,114 @@
+<!--<script src="Editor.js"></script>-->
+<!--<textarea id="content" name="content" readonly style="display:none;"></textarea>-->
+
+<div id="editorContainer" style="width:100%;">
+    <input id="btnBold" type="button" value="B" style="font-weight:bold;" onclick="insertTagOnSelection('bold');">
+    <input id="btnItalic" type="button" value="I" style="font-style:italic;" onclick="insertTagOnSelection('italic');">
+    <input id="btnUnderline" type="button" value="U" style="text-decoration:underline;" onclick="insertTagOnSelection('underline');">
+    <input id="btnStrikethrough" type="button" value="S" style="text-decoration:line-through;" onclick="insertTagOnSelection('strike');">
+    <input id="btnStrong" type="button" value="Important!" style="font-weight:bold;" onclick="insertTagOnSelection('important');">
+    <input id="btnLink" type="button" value="Link" style="color:blue;" onclick="insertTagOnSelection('link');">
+    <input id="btnList" type="button" value="List" onclick="insertTagOnSelection('list');">
+
+
+    <select onchange="insertTagOnSelection('title', this.value); this.selectedIndex = 0;">
+        <option id="optTitle" value="">Title</option>
+        <option id="optTitle1" value="h1">Title 1</option>
+        <option id="optTitle2" value="h2">Title 2</option>
+        <option id="optTitle3" value="h3">Title 3</option>
+    </select>
+    <select onchange="insertTagOnSelection('color', this.value); this.selectedIndex = 0;">
+        <option id="btnColor">Color</option>
+        <option value="black" style="background-color: black;"></option>
+        <option value="darkorange" style="background-color: darkorange;"></option>
+        <option value="saddlebrown" style="background-color: saddlebrown;"></option>
+        <option value="crimson" style="background-color: crimson;"></option>
+        <option value="green" style="background-color: green;"></option>
+        <option value="dimgray" style="background-color: dimgray;"></option>
+    </select>
+    <select onchange="insertTagOnSelection('align', this.value); this.selectedIndex = 0;">
+        <option id="btnAlign">Align</option>
+        <option value="left">Left</option>
+        <option value="center">Center</option>
+        <option value="right">Right</option>
+        <option value="full">Full</option>
+    </select>
+
+    <input id="btnSmall" type="button" value="small" onclick="insertTagOnSelection('decreaseFontSize');">
+    <input id="btnImage" type="button" value="Image" onclick="insertTagOnSelection('image');">
+    <input id="btnLeftImage" type="button" value="Image to left" onclick="insertTagOnSelection('leftImage');">
+    <input id="btnTable" type="button" value="Table" onclick="openDialogForm();">
+    <!-- BUG <input id="btnUndo" type="button" value="&#8617;" onclick="document.execCommand('undo');">
+    <input id="btnRedo" type="button" value="&#8618;" onclick="document.execCommand('redo');">-->
+
+
+    <div id="editor_content" style="width: 100%;height: 500px;border: 1px solid black;padding: 5px;overflow-y: auto;overflow-wrap: normal;" contentEditable="true" ></div>
+</div>
+
+<!--<div id="preview" style="font-family: 'Courier New', Courier, monospace;font-size:20px; width: 100%;height: 500px;border: 1px solid black;padding: 5px;overflow: auto;"></div>-->
+
+<button id="btnValidate" type="button">Validate</button>
+
+
+
+
+<!-- Boîte de dialogue pour le paramétrage du tableau à ajouter-->
+<dialog id="diagForm" onClose="onCloseDialogForm();">
+    <form method="dialog">
+        <label for="diagForm_rowNumber">Number of rows</label>
+        <select id="diagForm_rowNumber" onChange="onChangeDiagFormRowNumber();">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        </select>
+        <label for="diagForm_columnNumber">Number of columns</label>
+        <select id="diagForm_columnNumber" onChange="onChangeDiagFormColumnNumber();">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        </select>
+        
+        <label>Header</label>
+        <select id="diagForm_header" onChange="onChangeDiagFormHeader();">
+        <option value="without">Without</option>
+        <option value="firstRow">First row</option>
+        <option value="firstColumn">First column</option>
+        <option value="firstRowAndfirstColumn">First row and first column</option>
+        </select>
+        
+        <menu>
+        <button value="cancel">Cancel</button>
+        <button id="diagForm_btnValidate" value="ok">Validate</button>
+        </menu>
+    </form>
+</dialog>
+
+
+
+
+
+
