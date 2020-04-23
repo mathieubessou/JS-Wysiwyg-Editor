@@ -2,7 +2,7 @@ window.addEventListener("load", function() {
     // Récupération de la balise DIV de l'éditeur
     var editor = document.getElementById("JWE_inputContent");
     // Ajouter une balise P si l'éditeur est vide
-    if (!editor.innerHTML || editor.innerHTML.length === 0 || !editor.innerHTML.trim()) editor.innerHTML = '<p><br></p>';
+    if (!editor.innerHTML || editor.innerHTML.length === 0 || !editor.innerHTML.trim() || editor.innerHTML.match(/^ *<br> *$/i)) editor.innerHTML = '<p><br></p>';
     // insertion de la boîte de dialogue dans le code HTML
     InsertDialog();
     // Evènement Input sur l'éditeur
@@ -85,7 +85,7 @@ function loadContent(content) {
     // Récupération de la balise DIV de l'éditeur
     var editor = document.getElementById("JWE_inputContent");
     // Ajouter une balise P si l'éditeur est vide
-    if (!editor.innerHTML || editor.innerHTML.length === 0 || !editor.innerHTML.trim()) editor.innerHTML = '<p><br></p>';
+    if (!editor.innerHTML || editor.innerHTML.length === 0 || !editor.innerHTML.trim() || editor.innerHTML.match(/^ *<br> *$/i)) editor.innerHTML = '<p><br></p>';
 }
 
 function InsertDialog() {
