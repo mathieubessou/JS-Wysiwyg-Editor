@@ -1,6 +1,6 @@
-window.onload = function() {
+window.addEventListener("load", function() {
     // Récupération de la balise DIV de l'éditeur
-    var editor = document.getElementById("editor_content");
+    var editor = document.getElementById("JWE_inputContent");
     // Ajouter une balise P si l'éditeur est vide
     if (!editor.innerHTML || editor.innerHTML.length === 0 || !editor.innerHTML.trim()) editor.innerHTML = '<p><br></p>';
     // Evènement Input sur l'éditeur
@@ -37,7 +37,7 @@ window.onload = function() {
             winSelection.addRange(newRange);
         }
 
-        //document.getElementById("preview").innerHTML = html_specalEncode(document.getElementById("editor_content").innerHTML);
+        //document.getElementById("preview").innerHTML = html_specalEncode(document.getElementById("JWE_inputContent").innerHTML);
     }
     // Ne pas coller les éléments de styles
     editor.addEventListener("paste", function(e) {
@@ -52,8 +52,8 @@ window.onload = function() {
         document.execCommand("insertHTML", false, text);
     });
     // Evènement click sur le bouton VALIDER. Permet de néttoyer le code avant l'enregistrement
-    document.getElementById("btnValidate").onclick = function() {
-        var content = document.getElementById("editor_content").innerHTML;
+    document.getElementById("JWE_validate").onclick = function() {
+        var content = document.getElementById("JWE_inputContent").innerHTML;
         content = content
         // Suppréssion des SPAN (créé à cause d'un bug:
         // 1 - Ecrire du texte.
@@ -65,15 +65,21 @@ window.onload = function() {
         .replace(/<(p|div)><br><\/(p|div)>/mg, '<br>')
         // Remplace les balises <!> par <strong> inséré via le bouton "Important!".
         .replace(/&lt;(\/?)[!]&gt;/mg, '<$1strong>');
-        document.getElementById("content").value = content;
+        document.getElementById("JWE_outputContent").value = content;
         //document.getElementById("preview").innerHTML = html_specalEncode(content);
     }
     // Utiliser la balise P au lieu de DIV
     document.execCommand('defaultParagraphSeparator', false, 'p');
-}
+});
 
+// Utiliser cette méthode pour charger le contenu dans l'éditeur
 function loadContent(content) {
-    document.getElementById("editor_content").innerHTML = content;
+    //alert(content);
+    document.getElementById("JWE_inputContent").innerHTML = content;
+    // Récupération de la balise DIV de l'éditeur
+    var editor = document.getElementById("JWE_inputContent");
+    // Ajouter une balise P si l'éditeur est vide
+    if (!editor.innerHTML || editor.innerHTML.length === 0 || !editor.innerHTML.trim()) editor.innerHTML = '<p><br></p>';
 }
 
 /* Boîte de dialogue pour l'ajout de formulaire */
@@ -95,7 +101,7 @@ function openDialogForm() {
         diagForm_containerNodeCache = null;
         // Mise en mémoire du noeud et de la position sur le noeud où se trouvait le focus dans l'éditeur avant d'avoir cliqué sur le bouton "Form".
         diagForm_containerNodeCache = GetContainerNode();
-        var IsEditorSelection = parentIdOfSelectionExists("editor_content", 10);
+        var IsEditorSelection = parentIdOfSelectionExists("JWE_inputContent", 10);
         if (!IsEditorSelection || diagForm_containerNodeCache == null) {
             alert('error: dialog001. Vous devez cibler une zone dans l\'éditeur.'); // Ne rien faire si le noeud du conteneur n'est pas trouvé.
             return;
@@ -178,7 +184,7 @@ function removeBrOfNodeOnSelection(nodeName) {
     node = selection.focusNode;
     var pNode;
     for (var index = 0; index < 12; index++) {
-        if (node.id == "editor_content") return; // Arrêter la function si on atteint les limites de l'éditeur.
+        if (node.id == "JWE_inputContent") return; // Arrêter la function si on atteint les limites de l'éditeur.
         var regxForDelete = new RegExp('^'+nodeName+'$', 'i');
         if (String(node.nodeName).match(regxForDelete)) {
             for (let index = 0; index < node.childNodes.length; index++) {
@@ -200,7 +206,7 @@ function GetContainerNode() {
     if (document.getSelection().rangeCount == 0) return null;
     node = selection.focusNode;
     for (var index = 0; index < 15; index++) {
-        if (node.id == "editor_content") return null; // Arrêter la function si on atteint les limites de l'éditeur.
+        if (node.id == "JWE_inputContent") return null; // Arrêter la function si on atteint les limites de l'éditeur.
         if (String(node.nodeName).match(/^p|h[123456]|table|div$/i)) {
             return node;
         }
@@ -270,7 +276,7 @@ function IsInTag(tagName, attr = null, value = null, continueIfNotFound = false)
     if (document.getSelection().rangeCount == 0) return false;
     node = selection.focusNode;
     for (var index = 0; index < 15; index++) {
-        if (node.id == "editor_content") return null; // Arrêter la function si on atteint les limites de l'éditeur.
+        if (node.id == "JWE_inputContent") return null; // Arrêter la function si on atteint les limites de l'éditeur.
         if (tagFound(node, tagName)) {
             if (attr != null && attr != '' && !attrFound(node, attr)) {
                 if (continueIfNotFound) continue;
@@ -291,7 +297,7 @@ function insertTagOnSelection(name, param = null){
 
     var selection = document.getSelection();
     var hasSelectedText = selection != "";
-    var IsEditorSelection = parentIdOfSelectionExists("editor_content", 10);
+    var IsEditorSelection = parentIdOfSelectionExists("JWE_inputContent", 10);
     var parentNodeName = String(selection.focusNode.parentNode.nodeName);
 
 
