@@ -46,8 +46,12 @@ window.addEventListener("load", function() {
         // Récupération du text brut dans le presse-papier
         var event = e.originalEvent != null ? e.originalEvent : e;
         var text = event.clipboardData.getData('text/plain');
+        // Insérer chaque ligne dans une balise P
+        text = text.replace(/(.+)/ig, '<p>$1</p>');
+        // Correction d'un bug... La récupération du text créer parfois un caractère invisible (après de longue recherche, il sagirait de \r\n). A cause de lui, le code ne voulais pas s'afficher dans l'éditeur.
+        text = text.replace(/[\r\n]+/ig, '<p><br></p>')
         // Remplacement des "<p></p>" par "<p><br></p>"
-        text = text.replace(/(.+)/ig, '<p>$1</p>').replace(/<p><\/p>/ig, '<p><br></p>');
+        text = text.replace(/<p><\/p>/ig, '');
         // Ajout du texte à l'emplacement de la sélection (remplace la sélection)
         document.execCommand("insertHTML", false, text);
     });
