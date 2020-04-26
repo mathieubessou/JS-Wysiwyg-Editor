@@ -18,7 +18,8 @@ window.addEventListener("load", function() {
         // 2 - Sélectionner la partie la plus à gauche du texte.
         // 3 - Appuyer sur la touche "Enter" pour repousser le texte d'une ligne.
         // 4 (fin) - Appuyer sur la touche "Back".
-        if (this.deleteSpanOnInput && editor.innerHTML.match(/<span [^>]*>/i)) {
+        if (deleteSpanOnInput && editor.innerHTML.match(/<span [^>]*>/i)) {
+            alert('ok');
             if (cNode.innerHTML.match(/<span [^>]*>/i)) {
                 var newRange = document.createRange();
                 newRange.selectNodeContents(cNode);
@@ -41,9 +42,6 @@ window.addEventListener("load", function() {
 
         //document.getElementById("preview").innerHTML = html_specalEncode(document.getElementById("JWE_inputContent").innerHTML);
     }
-
-    var deleteSpanOnInput = true; // Indique qu'il faut supprimer les spans dans le texte après chaque entrée/modification dans l'éditeur
-
     // Ne pas coller les éléments de styles
     editor.addEventListener("paste", function(e) {
         // Annuler le collage.
@@ -80,6 +78,8 @@ window.addEventListener("load", function() {
     // Utiliser la balise P au lieu de DIV
     document.execCommand('defaultParagraphSeparator', false, 'p');
 });
+
+var deleteSpanOnInput = true; // Indique qu'il faut supprimer les spans dans le texte après chaque entrée/modification dans l'éditeur
 
 // Utiliser cette méthode pour charger le contenu dans l'éditeur
 function loadContent(content) {
@@ -473,7 +473,7 @@ function insertTagOnSelection(name, param = null){
             document.execCommand("strikeThrough");
             break;
         case "list":
-            this.deleteSpanOnInput = false; // Désactivation temporaire
+            deleteSpanOnInput = false; // Désactivation temporaire
             // Function qui insert un conteneur P dans les balises li qui n'en contiennent pas
             function AddTagInLI(ulNode, tag) {
                 for (var index = 0; index < ulNode.childElementCount; index++) {
@@ -563,7 +563,7 @@ function insertTagOnSelection(name, param = null){
                     document.execCommand('insertHTML', false, '<ul>'+ulNode.innerHTML+'</ul>');
                 }
             }
-            this.deleteSpanOnInput = true; // Réactivation
+            deleteSpanOnInput = true; // Réactivation
             break;
         case "color":
             document.execCommand("foreColor", false, param);
