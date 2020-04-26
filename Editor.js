@@ -301,7 +301,7 @@ function GetUlNode() {
 
 // Encode les balises <br> en \n (saut d ligne) et les caractères utilisé pour les balises HTML.
 function html_specalEncode(str) {
-    return str.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    return String(str).replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/(&lt;\/?(?:div|p|img|ul|li|table|t[rhd]|h[123])&gt;)/g, "$1<br>") // Balise container..
     .replace(/(&lt;\/(?:div|p|img|ul|li|table|t[rhd]|h[123])&gt;)/g, "<br>$1")
     ;
