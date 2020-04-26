@@ -377,6 +377,19 @@ function IsInTag(tagName, attr = null, value = null, continueIfNotFound = false)
     return false;
 }
 
+// Sélectionne tout le contenu de chaque noeud sélectionné
+function selectAllContentOfSelectedNodes() {
+    var selection = document.getSelection();
+    var startContainer = selection.getRangeAt(0).startContainer;
+    var endContainer = selection.getRangeAt(0).endContainer;
+    var newRange = document.createRange();
+    newRange.setStartBefore(startContainer);
+    newRange.setEndAfter(endContainer);
+    var winSelection = window.getSelection();
+    winSelection.removeAllRanges();
+    winSelection.addRange(newRange);
+}
+
 // Retourne un tableau contenant les noeuds sélectionné
 function getSelectedNodes() {
     var selection = document.getSelection();
