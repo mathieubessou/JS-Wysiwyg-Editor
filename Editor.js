@@ -18,7 +18,7 @@ window.addEventListener("load", function() {
         // 2 - Sélectionner la partie la plus à gauche du texte.
         // 3 - Appuyer sur la touche "Enter" pour repousser le texte d'une ligne.
         // 4 (fin) - Appuyer sur la touche "Back".
-        if (editor.innerHTML.match(/<span [^>]*>/i)) {
+        if (this.deleteSpanOnInput && editor.innerHTML.match(/<span [^>]*>/i)) {
             if (cNode.innerHTML.match(/<span [^>]*>/i)) {
                 var newRange = document.createRange();
                 newRange.selectNodeContents(cNode);
@@ -41,6 +41,9 @@ window.addEventListener("load", function() {
 
         //document.getElementById("preview").innerHTML = html_specalEncode(document.getElementById("JWE_inputContent").innerHTML);
     }
+
+    var deleteSpanOnInput = true; // Indique qu'il faut supprimer les spans dans le texte après chaque entrée/modification dans l'éditeur
+
     // Ne pas coller les éléments de styles
     editor.addEventListener("paste", function(e) {
         // Annuler le collage.
