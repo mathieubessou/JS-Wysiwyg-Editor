@@ -473,7 +473,97 @@ function insertTagOnSelection(name, param = null){
             document.execCommand("strikeThrough");
             break;
         case "list":
-            document.execCommand("insertUnorderedList");
+            this.deleteSpanOnInput = false; // Désactivation temporaire
+            // Function qui insert un conteneur P dans les balises li qui n'en contiennent pas
+            function AddTagInLI(ulNode, tag) {
+                for (var index = 0; index < ulNode.childElementCount; index++) {
+                    var liNode = ulNode.childNodes[index];
+                    var liNodeContent = liNode.firstChild;
+                    if (String(liNodeContent.nodeName).toLowerCase() == String(tag).toLowerCase()) {
+                        continue;
+                    }
+                    var p = document.createElement(tag);
+                    p.append(liNodeContent);
+                    liNode.append(p);
+                }
+            }
+            // Sélectionner tout le contenu de chaque noeud pour éviter les bugs
+            selectAllContentOfSelectedNodes();
+            // Mettre en mémoire l'état actuel pour différencier les sélection multiple (une partie de la liste + du texte hors de la liste = insérer le texte dans la liste)
+            var isInUlCACHE = IsInTag('UL');
+
+            // List to text
+            // Si on vient de transformer une liste en texte
+            if (isInUlCACHE) { // Transformer les éléments de liste Li en P
+                // Récupération du conteneur de la liste
+                var ulNode = selection.focusNode.parentNode.parentNode;
+                // Sélectionner toute la liste
+                selectNode(ulNode);
+                // Préparation du conteneur provisoir pour regrouper les balises P
+                var divTemp = document.createElement('div');
+                // copier les balises P présentes dans les élément de liste LI, dans divTemp
+                var node = ulNode.firstChild;
+                var counter = 0;
+                while (node) {
+                    divTemp.append(node.firstChild.cloneNode(true));
+                    counter++;
+                    node = ulNode.childNodes[counter];
+                }
+                // START - Requis pour qu'il n'y ai pas de bug gênant après la suppréssion de la liste...
+                var pTmp = document.createElement('p');
+                pTmp.append(document.createElement('br'));
+                ulNode.before(pTmp); // Indispensable pour pouvoir supprimer la liste d'un coup
+                var selection = document.getSelection();
+                var newRange = document.createRange();
+                newRange.setStartBefore(pTmp);
+                newRange.setEndAfter(ulNode);
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+                var pTmp = document.createElement('p');
+                pTmp.append(document.createElement('br'));
+                ulNode.after(pTmp); // Indispensable pour garder l'espace entre le texte de la liste et les éléments suivants. Empêche aussi l'apparition de SPAN.
+                // END - Requis pour qu'il n'y ai pas de bug gênant après la suppréssion de la liste...
+
+                document.execCommand("forwardDelete");
+
+                // Insertion des éléments P à la place de la liste
+                document.execCommand('insertHTML', false, divTemp.innerHTML);
+            }
+            // Text to list && Text+list to list
+            else {
+                document.execCommand("insertUnorderedList");
+                // Text+list to list
+                // Si une liste était déjà présente, mais qu'on a ajouté des éléments de liste.
+                // isInUlCACHE vaut NULL quand la méthode atteint les limites de l'éditeur.
+                if (IsInTag('UL')) {
+                    // Récupération du conteneur de la liste
+                    var ulNode = selection.focusNode.parentNode.parentNode;
+                    // Sélectionner toute la liste
+                    selectNode(ulNode);
+                    // Mettre en mémoire le noeud de la balise Ul
+                    ulNode = ulNode.cloneNode(true);
+                    // Désactiver le mode liste pour éviter le bug suivant: Créer une balise ul dans <ul><li><ICI></li></ul>
+                    document.execCommand('insertUnorderedList');
+                    // Ajout du conteneur P dans les balises li qui n'en contiennent pas
+                    AddTagInLI(ulNode, 'p')
+                    // Insertion de la liste à la place de la sélection
+                    document.execCommand('insertHTML', false, '<ul>'+ulNode.innerHTML+'</ul>');
+                }
+                // Text to list
+                // Si une nouvelle liste vient d'être ajouté : Elle a été placé dans une balise P et il faut corriger celà
+                else if (IsInTag('P')) {
+                    // Mettre en mémoire le noeud de la balise Ul
+                    var pNode = GetContainerNode();
+                    var ulNode = pNode.firstChild.cloneNode(true);
+                    // Annuler la mise en place de la liste pour ensuite la réinsérer via inserHTML pour éviter les bugs quand on fait CTRL+Z.
+                    document.execCommand('undo');
+                    // Ajout du conteneur P dans les balises li
+                    AddTagInLI(ulNode, 'p')
+                    // Insertion de la liste à la place de la sélection
+                    document.execCommand('insertHTML', false, '<ul>'+ulNode.innerHTML+'</ul>');
+                }
+            }
+            this.deleteSpanOnInput = true; // Réactivation
             break;
         case "color":
             document.execCommand("foreColor", false, param);
