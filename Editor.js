@@ -416,6 +416,27 @@ function getSelectedNodes() {
     return selectedNodes;
 }
 
+// Sélectionne tout le contenu de chaque noeud. Si le contenu d'une balise UL est à moitié sélectionné; sélectionne quand même toute la balise UL.
+function SelectUlAndExternalStringOfSelection() {
+    var selection = document.getSelection()
+    // Mise en mémoire des noeuds séléctionné
+    var startContainer = selection.getRangeAt(0).startContainer;
+    var endContainer = selection.getRangeAt(0).endContainer;
+    // Si le premier noeud sélectionné fait partie d'une liste déjà présente': Chercher l'élément UL
+    if (startContainer.parentNode.parentNode.parentNode.nodeName == 'UL') {
+        startContainer = startContainer.parentNode.parentNode.parentNode;
+    }
+    // Si le dernier noeud sélectionné fait partie de la liste déjà présente: Chercher l'élément UL
+    if (endContainer.parentNode.parentNode.parentNode.nodeName == 'UL') {
+        endContainer = endContainer.parentNode.parentNode.parentNode;
+    };
+    var newRange = document.createRange();
+    newRange.setStartBefore(startContainer);
+    newRange.setEndAfter(endContainer);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+}
+
 // Sélectionne le noeud indiqué en paramètre
 function selectNode(node) {
     var selection = document.getSelection();
