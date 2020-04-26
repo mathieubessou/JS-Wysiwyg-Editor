@@ -377,6 +377,15 @@ function IsInTag(tagName, attr = null, value = null, continueIfNotFound = false)
     return false;
 }
 
+// Sélectionne le noeud indiqué en paramètre
+function selectNode(node) {
+    var selection = document.getSelection();
+    var newRange = document.createRange();
+    newRange.selectNode(node);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+}
+
 function insertTagOnSelection(name, param = null){
 
     var selection = document.getSelection();
