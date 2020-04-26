@@ -83,7 +83,8 @@ window.addEventListener("load", function() {
 
 // Utiliser cette méthode pour charger le contenu dans l'éditeur
 function loadContent(content) {
-    //alert(content);
+    // Remplacer les balises <br> par <p><br></p> pour éviterles bug
+    content = content.replace(/<br>/ig, '<p><br><\/p>');
     document.getElementById("JWE_inputContent").innerHTML = content;
     // Récupération de la balise DIV de l'éditeur
     var editor = document.getElementById("JWE_inputContent");
