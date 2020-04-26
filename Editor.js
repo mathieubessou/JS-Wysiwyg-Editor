@@ -284,6 +284,20 @@ function GetContainerNode() {
     }
     return null;
 }
+// Récupère l'élément UL, parent de la sélection.
+function GetUlNode() {
+    selection = document.getSelection();
+    if (document.getSelection().rangeCount == 0) return null;
+    node = selection.focusNode;
+    for (var index = 0; index < 15; index++) {
+        if (node.id == "JWE_inputContent") return null; // Arrêter la function si on atteint les limites de l'éditeur.
+        if (String(node.nodeName).match(/^ul$/i)) {
+            return node;
+        }
+        node = node.parentNode;
+    }
+    return null;
+}
 
 // Encode les balises <br> en \n (saut d ligne) et les caractères utilisé pour les balises HTML.
 function html_specalEncode(str) {
