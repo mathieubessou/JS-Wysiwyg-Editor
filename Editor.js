@@ -377,6 +377,32 @@ function IsInTag(tagName, attr = null, value = null, continueIfNotFound = false)
     return false;
 }
 
+// Retourne un tableau contenant les noeuds sélectionné
+function getSelectedNodes() {
+    var selection = document.getSelection();
+    var OwnerSelectedNodes = selection.getRangeAt(0).commonAncestorContainer; // Noeud contenant les noeuds de la sélection et autre.
+    var firstSelectedNode = selection.getRangeAt(0).startContainer;
+    var lastSelectedNode = selection.getRangeAt(0).endContainer;
+    var firstIsReached = false; // Indique quand le premier noeud de la sélection est atteint
+    var selectedNodes = []; // Tableau de noeud à retourner
+    var counter = 0;
+    var nodeToCheck = OwnerSelectedNodes.childNodes[0];
+    while (nodeToCheck) {
+        if (nodeToCheck == firstSelectedNode || nodeToCheck.contains(firstSelectedNode))
+            firstIsReached = true;
+        // Ajout du noeud au tableau si on a atteint les noeuds de la sélection
+        if (firstIsReached)
+            selectedNodes.push(nodeToCheck);
+        // Arrêt de la boucle si on a vient d'ajouter le dernier noeud de la sélection dans le tableau
+        if (nodeToCheck == lastSelectedNode || nodeToCheck.contains(lastSelectedNode))
+            break;
+        // Préparation du noeud suivant
+        counter++;
+        nodeToCheck = OwnerSelectedNodes.childNodes[counter];
+    }
+    return selectedNodes;
+}
+
 // Sélectionne le noeud indiqué en paramètre
 function selectNode(node) {
     var selection = document.getSelection();
