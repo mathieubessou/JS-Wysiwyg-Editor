@@ -91,66 +91,6 @@ function loadContent(content) {
     if (!editor.innerHTML || editor.innerHTML.length === 0 || !editor.innerHTML.trim() || editor.innerHTML.match(/^ *<br> *$/i)) editor.innerHTML = '<p><br></p>';
 }
 
-function InsertDialog() {
-    // Boîte de dialogue pour le paramétrage du tableau à ajouter
-    var d = document.createElement('div');
-    d.innerHTML += `<dialog id="diagForm" onClose="onCloseDialogForm();">
-    <form method="dialog">
-        <label for="diagForm_rowNumber">Number of rows</label>
-        <select id="diagForm_rowNumber" onChange="onChangeDiagFormRowNumber();">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-        <option value="13">13</option>
-        <option value="14">14</option>
-        <option value="15">15</option>
-        <option value="16">16</option>
-        <option value="17">17</option>
-        <option value="18">18</option>
-        <option value="19">19</option>
-        <option value="20">20</option>
-        </select>
-        <label for="diagForm_columnNumber">Number of columns</label>
-        <select id="diagForm_columnNumber" onChange="onChangeDiagFormColumnNumber();">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        </select>
-        
-        <label>Header</label>
-        <select id="diagForm_header" onChange="onChangeDiagFormHeader();">
-        <option value="without">Without</option>
-        <option value="firstRow">First row</option>
-        <option value="firstColumn">First column</option>
-        <option value="firstRowAndfirstColumn">First row and first column</option>
-        </select>
-        
-        <menu>
-        <button value="cancel">Cancel</button>
-        <button id="diagForm_btnValidate" value="ok">Validate</button>
-        </menu>
-    </form>
-</dialog>`;
-
-    document.getElementById("JWE_form").after(d);
-}
-
 /* Boîte de dialogue pour l'ajout de formulaire */
 var diagForm_rowNumberValue = 1;
 var diagForm_columnNumberValue = 1;
@@ -243,6 +183,66 @@ function createTable(row, col, header, node) {
         table.append(tr);
     }
     node.after(table);
+}
+
+function InsertDialog() {
+    // Boîte de dialogue pour le paramétrage du tableau à ajouter
+    var d = document.createElement('div');
+    d.innerHTML += `<dialog id="diagForm" onClose="onCloseDialogForm();">
+    <form method="dialog">
+        <label for="diagForm_rowNumber">Number of rows</label>
+        <select id="diagForm_rowNumber" onChange="onChangeDiagFormRowNumber();">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        </select>
+        <label for="diagForm_columnNumber">Number of columns</label>
+        <select id="diagForm_columnNumber" onChange="onChangeDiagFormColumnNumber();">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        </select>
+        
+        <label>Header</label>
+        <select id="diagForm_header" onChange="onChangeDiagFormHeader();">
+        <option value="without">Without</option>
+        <option value="firstRow">First row</option>
+        <option value="firstColumn">First column</option>
+        <option value="firstRowAndfirstColumn">First row and first column</option>
+        </select>
+        
+        <menu>
+        <button value="cancel">Cancel</button>
+        <button id="diagForm_btnValidate" value="ok">Validate</button>
+        </menu>
+    </form>
+</dialog>`;
+
+    document.getElementById("JWE_form").after(d);
 }
 /* Fin -- Boîte de dialogue pour l'ajout de formulaire */
 
