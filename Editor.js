@@ -19,7 +19,6 @@ window.addEventListener("load", function() {
         // 3 - Appuyer sur la touche "Enter" pour repousser le texte d'une ligne.
         // 4 (fin) - Appuyer sur la touche "Back".
         if (deleteSpanOnInput && editor.innerHTML.match(/<span [^>]*>/i)) {
-            alert('ok');
             if (cNode.innerHTML.match(/<span [^>]*>/i)) {
                 var newRange = document.createRange();
                 newRange.selectNodeContents(cNode);
