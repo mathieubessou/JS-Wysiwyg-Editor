@@ -150,7 +150,6 @@ function createTable(row, col, header, node) {
     if (row == 0 || col == 0 || header == "" || node == null) return;
 
     var table = document.createElement('table');
-    table.contentEditable = false;
     // row
     for (let rIndex = 0; rIndex < row; rIndex++) {
         var tr = document.createElement('tr');
@@ -175,14 +174,18 @@ function createTable(row, col, header, node) {
                     c = document.createElement('td');
                     break;
             }
-            c.contentEditable = true;
             c.innerText = 'texte';
             tr.append(c);
         }
 
         table.append(tr);
     }
-    node.after(table);
+    selectNode(node);
+    var dTmp = document.createElement('div');
+    dTmp.append(node.cloneNode(true));
+    dTmp.append(table);
+    alert(dTmp.innerHTML);
+    document.execCommand('insertHTML', false, dTmp.innerHTML);
 }
 
 function InsertDialog() {
