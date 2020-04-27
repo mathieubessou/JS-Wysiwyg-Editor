@@ -182,8 +182,11 @@ function createTable(row, col, header, node) {
     }
     selectNode(node);
     var dTmp = document.createElement('div');
+    var pAfterTable = document.createElement('p');
+    pAfterTable.append(document.createElement('br'));
     dTmp.append(node.cloneNode(true));
     dTmp.append(table);
+    dTmp.append(pAfterTable);
     document.execCommand('insertHTML', false, dTmp.innerHTML);
 }
 
