@@ -634,13 +634,16 @@ function insertTagOnSelection(name, param = null){
             argument = prompt("Ecrivez l'adresse du lien :");
             if (argument == null || argument == '') return; // Ne rien faire si l'adresse de l'image n'est pas renseigné.
 
+            var dTmp = document.createElement('d');
             var p = document.createElement('p');
-            p.contentEditable = false;
             var img = document.createElement('img');
             img.src = argument;
             img.style = "float: left; margin: 5px 10px 10px 0px; max-width: 50%;";
             p.append(img);
-            containerNode.before(p);
+            dTmp.append(p);
+            dTmp.append(containerNode.cloneNode(true));
+            selectNode(containerNode);
+            document.execCommand('insertHTML', false, dTmp.innerHTML);
 
             break;
     }
