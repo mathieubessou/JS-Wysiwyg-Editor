@@ -618,7 +618,7 @@ function insertTagOnSelection(name, param = null){
             argument = prompt("Ecrivez l'adresse du lien :");
             if (argument == null || argument == '') return; // Ne rien faire si l'adresse de l'image n'est pas renseigné.
 
-            var dTmp = document.createElement('d');
+            var dTmp = document.createElement('div');
             var p = document.createElement('p');
             var img = document.createElement('img');
             img.src = argument;
@@ -637,7 +637,7 @@ function insertTagOnSelection(name, param = null){
             argument = prompt("Ecrivez l'adresse du lien :");
             if (argument == null || argument == '') return; // Ne rien faire si l'adresse de l'image n'est pas renseigné.
 
-            var dTmp = document.createElement('d');
+            var dTmp = document.createElement('div');
             var p = document.createElement('p');
             var img = document.createElement('img');
             img.src = argument;
