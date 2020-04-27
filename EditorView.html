@@ -3,19 +3,19 @@
     <input id="JWE_btnItalic" type="button" value="I" style="font-style:italic;" onclick="insertTagOnSelection('italic');">
     <input id="JWE_btnUnderline" type="button" value="U" style="text-decoration:underline;" onclick="insertTagOnSelection('underline');">
     <input id="JWE_btnStrikethrough" type="button" value="S" style="text-decoration:line-through;" onclick="insertTagOnSelection('strike');">
-    <input id="JWE_btnStrong" type="button" value="Important!" style="font-weight:bold;" onclick="insertTagOnSelection('important');">
-    <input id="JWE_btnLink" type="button" value="Link" style="color:blue;" onclick="insertTagOnSelection('link');">
-    <input id="JWE_JWE_btnList" type="button" value="List" onclick="insertTagOnSelection('list');">
+    <input id="JWE_btnStrong" type="button" value="&#10071;" style="font-weight:bold;" onclick="insertTagOnSelection('important');">
+    <input id="JWE_btnLink" type="button" value="&#128279;" style="color:blue;" onclick="insertTagOnSelection('link');">
+    <input id="JWE_JWE_btnList" type="button" value="&#10998;&#9776;" onclick="insertTagOnSelection('list');">
 
 
     <select onchange="insertTagOnSelection('title', this.value); this.selectedIndex = 0;">
-        <option id="JWE_optTitle" value="">Title</option>
+        <option id="JWE_optTitle">Title</option>
         <option id="JWE_optTitle1" value="h1">Title 1</option>
         <option id="JWE_optTitle2" value="h2">Title 2</option>
         <option id="JWE_optTitle3" value="h3">Title 3</option>
     </select>
     <select onchange="insertTagOnSelection('color', this.value); this.selectedIndex = 0;">
-        <option id="JWE_btnColor">Color</option>
+        <option id="JWE_btnColor">&#127912;</option>
         <option value="black" style="background-color: black;"></option>
         <option value="darkorange" style="background-color: darkorange;"></option>
         <option value="saddlebrown" style="background-color: saddlebrown;"></option>
@@ -32,9 +32,9 @@
     </select>
 
     <input id="JWE_btnSmall" type="button" value="small" onclick="insertTagOnSelection('decreaseFontSize');">
-    <input id="JWE_btnImage" type="button" value="Image" onclick="insertTagOnSelection('image');">
-    <input id="JWE_btnLeftImage" type="button" value="Image to left" onclick="insertTagOnSelection('leftImage');">
-    <input id="JWE_btnTable" type="button" value="Table" onclick="openDialogForm();">
+    <input id="JWE_btnImage" type="button" value="&#9978;" onclick="insertTagOnSelection('image');">
+    <input id="JWE_btnLeftImage" type="button" value="&#11013;&#9978;" onclick="insertTagOnSelection('leftImage');">
+    <input id="JWE_btnTable" type="button" value="&#9638;" onclick="openDialogForm();">
     <!-- BUG <input id="btnUndo" type="button" value="&#8617;" onclick="document.execCommand('undo');">
     <input id="btnRedo" type="button" value="&#8618;" onclick="document.execCommand('redo');">-->
 
