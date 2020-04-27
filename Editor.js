@@ -612,22 +612,20 @@ function insertTagOnSelection(name, param = null){
             }
             break;
         case "image":
-            var containerNode = GetContainerNode();
-            if (containerNode == null) return; // Ne rien faire si le noeud du conteneur n'est pas trouvé.
-            
             argument = prompt("Ecrivez l'adresse du lien :");
             if (argument == null || argument == '') return; // Ne rien faire si l'adresse de l'image n'est pas renseigné.
 
+            var dTmp = document.createElement('d');
             var p = document.createElement('p');
-            p.contentEditable = false;
             var img = document.createElement('img');
             img.src = argument;
             img.style = " margin: 5px 0px 10px 0px; max-width: 100%;";
             p.append(img);
-            containerNode.after(p);
             var pAfterP = document.createElement('p'); // Pour pouvoir sélectionner/insérer du texte après l'image quand elle se trouve en dernière position.
             pAfterP.append(document.createElement('br'));
-            p.after(pAfterP);
+            dTmp.append(p);
+            dTmp.append(pAfterP);
+            document.execCommand('insertHTML', false, dTmp.innerHTML);
             break;
         case "leftImage":
             var containerNode = GetContainerNode();
