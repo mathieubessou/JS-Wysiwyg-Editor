@@ -184,7 +184,6 @@ function createTable(row, col, header, node) {
     var dTmp = document.createElement('div');
     dTmp.append(node.cloneNode(true));
     dTmp.append(table);
-    alert(dTmp.innerHTML);
     document.execCommand('insertHTML', false, dTmp.innerHTML);
 }
 
