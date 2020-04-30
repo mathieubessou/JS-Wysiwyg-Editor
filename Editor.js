@@ -618,6 +618,24 @@ function AddTagInLI(ulNode, tag) {
     }
 }
 
+// Désactive les balises H[1-6] sélectionnés
+function disableSelectedHeaders() {
+    var rangeCache = prepareRangeFromOutsideNodeOfSelection();
+    // Récupération des éléments de la sélection
+    var elements = getSelectedNodes();
+    // Parcourir tous les éléments à la recherche d'une balise H
+    GetContainerNode()
+    elements.forEach(element => {
+        node = findNode(element, '^H[1-6]$');
+        if (node != null) {
+            selectNode(node);
+            document.execCommand('formatBlock', false, 'p');
+        }
+    });
+    selectRange(createRangeFromOutsideNodeOfSelection(rangeCache));
+}
+
+
 function insertTagOnSelection(name, param = null){
 
     var selection = document.getSelection();
