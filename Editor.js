@@ -483,6 +483,113 @@ function RemoveAllSelection() {
     s.removeAllRanges();
 }
 
+// Récupère le premier noeud #text du noeud indiqué en paramètre
+function getFirstTextNode(node) {
+    if (node.nodeName == '#text') {
+        return node;
+    }
+    else {
+        var node = node.childNodes[0];
+        return getFirstTextNode(node);
+    }
+}
+
+// Récupère le dernier noeud #text du noeud indiqué en paramètre
+function getlastTextNode(node) {
+    if (node.nodeName == '#text') {
+        return node;
+    }
+    else {
+        var node = node.childNodes[node.childNodes.length-1];
+        return getlastTextNode(node);
+    }
+}
+
+// Créer un objet Range partir des données créé par la méthode prepareRangeFromOutsideNodeOfSelection()
+function createRangeFromOutsideNodeOfSelection(data) {
+    if (!data) {
+        alert('error: selection003');
+        return;
+    }
+    var range = document.createRange();
+    var children = data.owner.childNodes;
+    if (data.owner.childNodes.length == 1) {
+        range.selectNodeContents(data.owner);
+    }
+    else if (data.owner.childNodes.length == 2) {
+        range.setStartBefore(children[0]);
+        range.setEndAfter(children[1]);
+    }
+    else if (data.owner.childNodes.length > 2) {
+        if (data.isFirstInOwner) { // Le noeud est le premier enfant.
+            range.setStart(getFirstTextNode(data.owner), 0);
+        }
+        else {
+            range.setStartBefore(data.startAfter.nextSibling.firstChild);
+        }
+        if (data.isLast) { // Le noeud est le dernier enfant
+            var lastTextNode = getlastTextNode(data.owner);
+            range.setEnd(lastTextNode, lastTextNode.length);
+        }
+        else {
+            var lastTextNode = getlastTextNode(data.endBefore.previousSibling);
+            range.setEndAfter(data.endBefore.previousSibling.lastChild);
+        }
+    }
+    else {
+        // error
+    }
+    return range;
+}
+
+// Prépare des données pour créer un objet Range en se basant sur les noeuds englobant (avant et après) la sélection
+// Utiliser les données reçu avec la méthode createRangeFromOutsideNodeOfSelection()
+function prepareRangeFromOutsideNodeOfSelection() {
+    var data = new Object();
+    var nodesCache = getSelectedNodes(); // Récupère les éléments sélectionnés sous forme de tableau
+    var startingNode = nodesCache[0]; // Contient le premier élément du tableau
+    if (!startingNode?.parentNode) {
+        alert('error: selection005');
+        RemoveAllSelection();
+        return false;
+    }
+    var ownerNodes = startingNode.parentNode;
+    data.owner = ownerNodes;
+    if (ownerNodes.childNodes.length > 0) {
+        var endingNode = nodesCache[nodesCache.length-1]; // Contient le dernier élément du tableau
+        var elementCache; // Contient l'élément précédement recherché dans la boucle
+        // parcourir les noeuds enfants pour trouver le noeud "avant" et "après" la sélection
+        for (let index = 0; index < ownerNodes.childNodes.length; index++) {
+            var element = ownerNodes.childNodes[index];
+            if (element == startingNode) {
+                if (index == 0) { // Le noeud est le premier enfant.
+                    data.isFirstInOwner = true;
+                }
+                else {
+                    data.isFirstInOwner = false;
+                    data.startAfter = elementCache;
+                }
+            }
+            if (element == endingNode) {
+                if (index == ownerNodes.childNodes.length-1) { // Le noeud est le dernier enfant
+                    data.isLast = true;
+                }
+                else {
+                    data.isLast = false;
+                    data.endBefore = ownerNodes.childNodes[index+1];
+                }
+                break;
+            }
+            elementCache = element;
+        }
+    }
+    else { // = 0
+        // error
+        return null;
+    }
+    return data;
+}
+
 function insertTagOnSelection(name, param = null){
 
     var selection = document.getSelection();
