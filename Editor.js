@@ -458,6 +458,17 @@ function selectNodeContents(node) {
     selection.addRange(newRange);
 }
 
+// Sélectionne l'objet Range indiqué en paramètre
+function selectRange(range) {
+    if (range == null) {
+        alert('error: selection002');
+        return;
+    }
+    var selection = document.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+}
+
 function insertTagOnSelection(name, param = null){
 
     var selection = document.getSelection();
