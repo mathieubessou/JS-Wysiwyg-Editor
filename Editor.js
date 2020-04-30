@@ -109,7 +109,19 @@ function loadContent(content) {
     if (!editor.innerHTML || editor.innerHTML.length === 0 || !editor.innerHTML.trim() || editor.innerHTML.match(/^ *<br> *$/i)) editor.innerHTML = '<p><br></p>';
 }
 
+
+
+
+
+
+
+
+
+
+
+/* ******************************************** */
 /* Boîte de dialogue pour l'ajout de formulaire */
+/* ******************************************** */
 var diagForm_rowNumberValue = 1;
 var diagForm_columnNumberValue = 1;
 var diagForm_headerValue = "without";
@@ -267,7 +279,9 @@ function InsertDialog() {
 
     document.getElementById("JWE_form").after(d);
 }
-/* Fin -- Boîte de dialogue pour l'ajout de formulaire */
+/* *************************************************** */
+/* FIN -- Boîte de dialogue pour l'ajout de formulaire */
+/* *************************************************** */
 
 function removeBrOfNodeOnSelection(nodeName) {
     selection = document.getSelection();
