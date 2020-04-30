@@ -307,14 +307,23 @@ function GetContainerNode() {
     }
     return null;
 }
-// Récupère l'élément UL, parent de la sélection.
-function GetUlNode() {
-    selection = document.getSelection();
-    if (document.getSelection().rangeCount == 0) return null;
-    node = selection.focusNode;
+
+// Récupère l'élément UL ou OL, parent du noeud indiqué en paramètre
+function GetListNode(node) {
+    return findNode(node, '^ul|ol$');
+}
+
+// Récupère l'élément parent indiqué via le pattern.
+function findNode(node, pattern, option = 'i') {
+    if (!node) return null;
+    if (!pattern) {
+        alert('error: fatal error 01');
+        return;
+    }
     for (var index = 0; index < 15; index++) {
         if (node.id == "JWE_inputContent") return null; // Arrêter la function si on atteint les limites de l'éditeur.
-        if (String(node.nodeName).match(/^ul$/i)) {
+        var regex = new RegExp(pattern, option);
+        if (String(node.nodeName).match(regex)) {
             return node;
         }
         node = node.parentNode;
