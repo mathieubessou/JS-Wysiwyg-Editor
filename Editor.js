@@ -590,6 +590,20 @@ function prepareRangeFromOutsideNodeOfSelection() {
     return data;
 }
 
+// Function qui insert un conteneur P (ou autre) dans les balises li qui n'en contiennent pas
+function AddTagInLI(ulNode, tag) {
+    for (var index = 0; index < ulNode.childElementCount; index++) {
+        var liNode = ulNode.childNodes[index];
+        var liNodeContent = liNode.firstChild;
+        if (String(liNodeContent.nodeName).toLowerCase() == String(tag).toLowerCase()) {
+            continue;
+        }
+        var p = document.createElement(tag);
+        p.append(liNodeContent);
+        liNode.append(p);
+    }
+}
+
 function insertTagOnSelection(name, param = null){
 
     var selection = document.getSelection();
@@ -618,19 +632,6 @@ function insertTagOnSelection(name, param = null){
             break;
         case "list":
             deleteSpanOnInput = false; // Désactivation temporaire
-            // Function qui insert un conteneur P dans les balises li qui n'en contiennent pas
-            function AddTagInLI(ulNode, tag) {
-                for (var index = 0; index < ulNode.childElementCount; index++) {
-                    var liNode = ulNode.childNodes[index];
-                    var liNodeContent = liNode.firstChild;
-                    if (String(liNodeContent.nodeName).toLowerCase() == String(tag).toLowerCase()) {
-                        continue;
-                    }
-                    var p = document.createElement(tag);
-                    p.append(liNodeContent);
-                    liNode.append(p);
-                }
-            }
             // Sélectionner tout le contenu de chaque noeud pour éviter les bugs
             selectAllContentOfSelectedNodes();
             // Mettre en mémoire l'état actuel pour différencier les sélection multiple (une partie de la liste + du texte hors de la liste = insérer le texte dans la liste)
