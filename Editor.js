@@ -477,6 +477,12 @@ function selectRange(range) {
     selection.addRange(range);
 }
 
+// Supprime toutes les sélections
+function RemoveAllSelection() {
+    var s = document.getSelection();
+    s.removeAllRanges();
+}
+
 function insertTagOnSelection(name, param = null){
 
     var selection = document.getSelection();
