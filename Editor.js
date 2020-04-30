@@ -414,25 +414,39 @@ function selectAllContentOfSelectedNodes() {
     winSelection.addRange(newRange);
 }
 
-// Retourne un tableau contenant les noeuds sélectionné
+// Retourne un tableau contenant les noeuds sélectionné (A améliorer)
 function getSelectedNodes() {
+    var selectedNodes = []; // Tableau de noeud à retourner
     var selection = document.getSelection();
     var OwnerSelectedNodes = selection.getRangeAt(0).commonAncestorContainer; // Noeud contenant les noeuds de la sélection et autre.
+    // Si OwnerSelectedNodes n'est pas l'éditeur: Récupérer le parent (Se faisant, ses éléments seront automatiquement récupéré...)
+    if (OwnerSelectedNodes.id != 'JWE_inputContent') {
+        selectedNodes.push(OwnerSelectedNodes);
+        return selectedNodes; // Inutile de continuer étant donnée qu'on a récupéré tous les éléments recherché.
+    }
+    else {
+        if (OwnerSelectedNodes.childNodes.length == 1) {
+            selectedNodes.push(OwnerSelectedNodes.firstChild);
+            return selectedNodes; // Inutile de continuer étant donnée qu'on a récupéré tous les éléments recherché.
+        }
+    }
     var firstSelectedNode = selection.getRangeAt(0).startContainer;
     var lastSelectedNode = selection.getRangeAt(0).endContainer;
     var firstIsReached = false; // Indique quand le premier noeud de la sélection est atteint
-    var selectedNodes = []; // Tableau de noeud à retourner
     var counter = 0;
     var nodeToCheck = OwnerSelectedNodes.childNodes[0];
     while (nodeToCheck) {
-        if (nodeToCheck == firstSelectedNode || nodeToCheck.contains(firstSelectedNode))
+        if (nodeToCheck == firstSelectedNode || nodeToCheck.contains(firstSelectedNode)) {
             firstIsReached = true;
+        }
         // Ajout du noeud au tableau si on a atteint les noeuds de la sélection
-        if (firstIsReached)
+        if (firstIsReached) {
             selectedNodes.push(nodeToCheck);
+        }
         // Arrêt de la boucle si on a vient d'ajouter le dernier noeud de la sélection dans le tableau
-        if (nodeToCheck == lastSelectedNode || nodeToCheck.contains(lastSelectedNode))
+        if (nodeToCheck == lastSelectedNode || nodeToCheck.contains(lastSelectedNode)) {
             break;
+        }
         // Préparation du noeud suivant
         counter++;
         nodeToCheck = OwnerSelectedNodes.childNodes[counter];
