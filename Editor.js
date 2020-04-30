@@ -664,6 +664,52 @@ function ConvertSelectionToUnorderedList() {
     selectRange(createRangeFromOutsideNodeOfSelection(rangeData));
 }
 
+// Prépare une liste à être supprimé preprement
+function prepareForDeleteUl(ulNode) {
+    // START - Requis pour qu'il n'y ai pas de bug gênant après la suppréssion de la liste...
+    var pTmp = document.createElement('p');
+    pTmp.append(document.createElement('br'));
+    ulNode.before(pTmp); // Indispensable pour pouvoir supprimer la liste d'un coup
+    var selection = document.getSelection();
+    var newRange = document.createRange();
+    newRange.setStartBefore(pTmp);
+    newRange.setEndAfter(ulNode);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+    var pTmp = document.createElement('p');
+    pTmp.append(document.createElement('br'));
+    ulNode.after(pTmp); // Indispensable pour garder l'espace entre le texte de la liste et les éléments suivants. Empêche aussi l'apparition de SPAN.
+    // END - Requis pour qu'il n'y ai pas de bug gênant après la suppréssion de la liste...
+    // Code pour supprimer: document.execCommand("forwardDelete");
+}
+
+// Désactive proprement une liste
+function disableListUl(ulNode, deleteList = false) {
+    // Préparation de la dernière sélection permettant de (re)sélectionner le texte à la fin de cette méthode.
+    var rangeData = prepareRangeFromOutsideNodeOfSelection();
+    if (ulNode.nodeName != 'UL') {
+        alert('error: liste001'); // Ne rien faire si ce n'est pas une liste
+        RemoveAllSelection();
+        return;
+    }
+    // Sélectionner toute la liste
+    selectNode(ulNode);
+    // Préparation du code html regroupant les balises P
+    htmlOfUl = '';
+    // Insérer le code HTML dans htmlOfUl
+    ulNode.childNodes.forEach(element => {
+        htmlOfUl += element.innerHTML;
+    });
+    // Requis pour qu'il n'y ai pas de bug gênant après la suppréssion de la liste...
+    prepareForDeleteUl(ulNode);
+    // Insertion des éléments P à la place de la liste
+    deleteSpanOnInputCache = deleteSpanOnInput; // Sauvagarde de l'état
+    deleteSpanOnInput = false; // Désactivation temporaire
+    if (!deleteList) document.execCommand('insertHTML', false, htmlOfUl);
+    deleteSpanOnInput = deleteSpanOnInputCache; // Réinsertion de l'état avant l'utilisation de cette méthode
+    selectRange(createRangeFromOutsideNodeOfSelection(rangeData));
+}
+
 
 function insertTagOnSelection(name, param = null){
 
