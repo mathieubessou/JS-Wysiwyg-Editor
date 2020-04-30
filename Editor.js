@@ -440,11 +440,19 @@ function getSelectedNodes() {
     return selectedNodes;
 }
 
-// Sélectionne le noeud indiqué en paramètre
-function selectNode(node) {
+// Créer une sélection à partir des noeuds indiqué en paramètre
+function selectNode(start, end = null) {
+    if (start == null) {
+        alert('error: selection001');
+        return;
+    }
     var selection = document.getSelection();
     var newRange = document.createRange();
-    newRange.selectNode(node);
+    if (end == null) newRange.selectNode(start);
+    else {
+        newRange.setStartBefore(start);
+        newRange.setEndAfter(end);
+    }
     selection.removeAllRanges();
     selection.addRange(newRange);
 }
