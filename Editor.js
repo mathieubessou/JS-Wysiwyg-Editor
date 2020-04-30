@@ -292,13 +292,14 @@ function removeBrOfNodeOnSelection(nodeName) {
     return;
 }
 
-// 
+// Récupère le conteneur principal de la sélection. (Utiliser GetListNode() pour récupérer une liste UL ou OL)
 function GetContainerNode() {
     selection = document.getSelection();
     if (document.getSelection().rangeCount == 0) return null;
     node = selection.focusNode;
     for (var index = 0; index < 15; index++) {
         if (node.id == "JWE_inputContent") return null; // Arrêter la function si on atteint les limites de l'éditeur.
+        // Vérifie si c'est un conteneur. <!>Attention ! Ne pas utiliser pour rechercher les balises UL ou OL, car une balise P peut être trouvé avant (dans le cas où seul, le texte d'une ligne de liste serait sélectionné).
         if (String(node.nodeName).match(/^p|h[123456]|table|div$/i)) {
             return node;
         }
