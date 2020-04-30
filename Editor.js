@@ -635,6 +635,35 @@ function disableSelectedHeaders() {
     selectRange(createRangeFromOutsideNodeOfSelection(rangeCache));
 }
 
+// Converti la sélection en une liste
+function ConvertSelectionToUnorderedList() {
+    // Préparation de la dernière sélection permettant de sélectionner la liste à la fin de cette méthode.
+    var rangeData = prepareRangeFromOutsideNodeOfSelection()
+    if (!rangeData) {
+        return;
+    }
+    // Transformation des textes en liste
+    document.execCommand("insertUnorderedList");
+    // Récupération du conteneur de la liste
+    var ulNode = document.getSelection().focusNode.parentNode.parentNode;
+    ulNode = ulNode.nodeName == 'LI' ? ulNode.parentNode : ulNode;
+    var parentOfListAndP = ulNode.parentNode.parentNode;
+    var htmlOfUl = "";
+    // Ajout du conteneur P dans les balises li qui n'en contiennent pas
+    AddTagInLI(ulNode, 'p');
+    // Sauvegarde du code html de la liste
+    htmlOfUl = '<ul>'+ulNode.innerHTML+'</ul>';
+    // Annuler la mise en place de la liste pour ensuite la réinsérer via inserHTML pour éviter les bugs quand on fait CTRL+Z.
+    document.execCommand('undo');
+    disableSelectedHeaders(); // Désactiver le mode "titre" de la sélection
+    // Insertion de la liste à la place de la sélection
+    deleteSpanOnInputCache = deleteSpanOnInput; // Sauvagarde de l'état
+    deleteSpanOnInput = false; // Désactivation temporaire
+    document.execCommand('insertHTML', false, htmlOfUl);
+    deleteSpanOnInput = deleteSpanOnInputCache; // Réinsertion de l'état avant l'utilisation de cette méthode
+    selectRange(createRangeFromOutsideNodeOfSelection(rangeData));
+}
+
 
 function insertTagOnSelection(name, param = null){
 
