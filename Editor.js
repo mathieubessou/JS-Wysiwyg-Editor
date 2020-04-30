@@ -7,11 +7,29 @@ window.addEventListener("load", function() {
     InsertDialog();
     // Evènement Input sur l'éditeur
     editor.oninput = function() {
-        // Ajouter une balise P si l'éditeur est vide
-        if (editor.innerHTML == "") editor.innerHTML = '<p><br></p>';
+        var s = document.getSelection();
+        // Si l'éditeur est vide: Annuler la dernière action puis remplacer le contenu de l'éditeur par '<p><br></p>'
+        if (editor.innerHTML == "") {
+            document.execCommand('undo');
+            // Si l'éditeur contient autre chose que <p><br></p>
+            if (editor.innerHTML != "<p><br></p>") {
+                selectNodeContents(editor);
+            }
+            document.execCommand('forwardDelete');
+            // Si la sélection se trouve dans une balise h1
+            if (s.focusNode.nodeName == 'H1') {
+                document.execCommand('formatBlock', false, 'p');
+            }
+            return; // Inutile de continuer étant donnée qu'on a annulé l'action...
+        }
+        // Si après une action, la sélection se trouve directement dans l'éditeur (donc sans balise) :
+        // Annuler la dernière action.
+        else if (s.focusNode == editor) {
+            document.execCommand('undo');
+            return; // Inutile de continuer étant donnée qu'on a annulé l'action...
+        }
 
         var cNode = GetContainerNode();
-        var s = document.getSelection();
         var offsetCache = s.focusOffset;
         // Suppréssion des SPAN (créé à cause d'un bug:
         // 1 - Ecrire du texte.
