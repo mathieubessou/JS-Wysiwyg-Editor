@@ -449,6 +449,15 @@ function selectNode(node) {
     selection.addRange(newRange);
 }
 
+// Sélectionne le contenu du noeud indiqué en paramètre
+function selectNodeContents(node) {
+    var selection = document.getSelection();
+    var newRange = document.createRange();
+    newRange.selectNodeContents(node);
+    selection.removeAllRanges();
+    selection.addRange(newRange);
+}
+
 function insertTagOnSelection(name, param = null){
 
     var selection = document.getSelection();
