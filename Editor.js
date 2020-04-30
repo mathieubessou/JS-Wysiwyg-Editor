@@ -283,28 +283,6 @@ function InsertDialog() {
 /* FIN -- Boîte de dialogue pour l'ajout de formulaire */
 /* *************************************************** */
 
-function removeBrOfNodeOnSelection(nodeName) {
-    selection = document.getSelection();
-    var offsetCache = selection.focusOffset;
-    if (document.getSelection().rangeCount == 0) return;
-    node = selection.focusNode;
-    var pNode;
-    for (var index = 0; index < 12; index++) {
-        if (node.id == "JWE_inputContent") return; // Arrêter la function si on atteint les limites de l'éditeur.
-        var regxForDelete = new RegExp('^'+nodeName+'$', 'i');
-        if (String(node.nodeName).match(regxForDelete)) {
-            for (let index = 0; index < node.childNodes.length; index++) {
-                const nodeChild = node.childNodes[index];
-                if (String(nodeChild.nodeName).toLowerCase() == 'br') {
-                    nodeChild.remove();
-                }
-            }
-            break;
-        }
-        node = node.parentNode;
-    }
-    return;
-}
 
 // Récupère le conteneur principal de la sélection. (Utiliser GetListNode() pour récupérer une liste UL ou OL)
 function GetContainerNode() {
