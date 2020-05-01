@@ -822,13 +822,11 @@ function insertTagOnSelection(name, param = null){
             }
             break;
         case "title":
-            if ((param == 'h1' && IsInTag('h1')) ||
-            (param == 'h2' && IsInTag('h2')) ||
-            (param == 'h3' && IsInTag('h3'))) {
-                document.execCommand("formatBlock", false, '<p>');
+            if (String(param).match(/^h[1-6]$/i)) {
+                document.execCommand("formatBlock", false, '<'+param+'>');
             }
             else {
-                document.execCommand("formatBlock", false, '<'+param+'>');
+                disableSelectedHeaders();
             }
             break;
         case "align":
