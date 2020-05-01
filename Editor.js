@@ -714,9 +714,7 @@ function disableListUl(ulNode, deleteList = false) {
 function insertTagOnSelection(name, param = null){
 
     var selection = document.getSelection();
-    var hasSelectedText = selection != "";
     var IsEditorSelection = parentIdOfSelectionExists("JWE_inputContent", 10);
-    var parentNodeName = String(selection.focusNode.parentNode.nodeName);
 
 
     if (!IsEditorSelection) alert("Vous devez sélectionner le texte dans l'éditeur.");
