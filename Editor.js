@@ -63,6 +63,8 @@ window.addEventListener("load", function() {
     editor.addEventListener("paste", function(e) {
         // Annuler le collage.
         e.preventDefault();
+        // S'assurer qu'on ne colle pas du texte dans une balise H[1-6]
+        disableSelectedHeaders();
         // Récupération du text brut dans le presse-papier
         var event = e.originalEvent != null ? e.originalEvent : e;
         var text = event.clipboardData.getData('text/plain');
