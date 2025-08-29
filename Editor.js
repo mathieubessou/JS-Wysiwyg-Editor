@@ -861,6 +861,65 @@ function insertTagOnSelection(name, param = null){
             dTmp.append(p);
             dTmp.append(pAfterP);
             document.execCommand('insertHTML', false, dTmp.innerHTML);
+            setTimeout(() => {
+                const editor = document.getElementById("JWE_inputContent");
+                const imgs = editor.querySelectorAll("img");
+                imgs.forEach(img => {
+                    if (img.getAttribute("data-resizable")) return; // éviter doublons
+                    img.setAttribute("data-resizable", "true");
+                    // Création du conteneur
+                    const wrapper = document.createElement("span");
+                    wrapper.style.position = "relative";
+                    wrapper.style.display = "inline-block";
+                    // Création de la poignée
+                    const handle = document.createElement("span");
+                    handle.style.position = "absolute";
+                    handle.style.right = "-20px";
+                    handle.style.bottom = "-10px";
+                    handle.style.width = "24px";
+                    handle.style.height = "24px";
+                    handle.style.background = "rgba(0, 0, 0, 0.8)";
+                    handle.style.border = "2px solid white";
+                    handle.style.color = "white";
+                    handle.style.fontSize = "18px";
+                    handle.style.cursor = "nwse-resize";
+                    handle.style.borderRadius = "50%";
+                    handle.style.zIndex = "10";
+                    handle.style.display = "inline-block";
+                    handle.style.border = "2px solid white";
+                    handle.style.userSelect = "none";
+                    // Enregistrement du ratio initial
+                    if (!img.getAttribute("data-ratio")) {
+                        const ratio = img.naturalWidth / img.naturalHeight;
+                        img.setAttribute("data-ratio", ratio);
+                    }
+                    const ratio = parseFloat(img.getAttribute("data-ratio"));
+                    // Gestion du drag
+                    handle.addEventListener("mousedown", function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const startX = e.clientX;
+                        const startWidth = img.width || img.naturalWidth;
+                        function onMouseMove(ev) {
+                            let newWidth = startWidth + (ev.clientX - startX);
+                            if (newWidth < 32) newWidth = 32;
+                            let newHeight = newWidth / ratio;
+                            img.width = Math.round(newWidth);
+                            img.height = Math.round(newHeight);
+                        }
+                        function onMouseUp() {
+                            document.removeEventListener("mousemove", onMouseMove);
+                            document.removeEventListener("mouseup", onMouseUp);
+                        }
+                        document.addEventListener("mousemove", onMouseMove);
+                        document.addEventListener("mouseup", onMouseUp);
+                    });
+                    // Remplacer l'image par le wrapper
+                    img.parentNode.insertBefore(wrapper, img);
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(handle);
+                });
+            }, 100);
             break;
         case "leftImage":
             var containerNode = GetContainerNode();
